@@ -1,7 +1,7 @@
 # !/usr/bin/ruby
 #coding : utf-8
 
-# テスト駆動開発入門7章　りんごとみかん
+# テスト駆動開発入門10章　興味深い時(times)
 
 require "test/unit"
 
@@ -30,45 +30,35 @@ end
 
 class Money
 
-  attr_accessor :amount
+  attr_accessor :amount, :currency
   protected :amount
+
+  def initialize(amount, currency)
+    @amount = amount
+    @currency = currency
+  end
 
   # @amountに直接アクセスできないのでgetterを定義
   def ==(other)
-    return @amount == other.amount && self.class == other.class
+    return @amount == other.amount && @currency == other.currency
+  end
+
+  def *(multiplier)
+    return Money.new(@amount*multiplier,@currency)
   end
 
   def self.franc(amount)
-    return Franc.new(amount)
+    return Franc.new(amount, "CHF")
   end
   
   def self.dollar(amount)
-    return Dollar.new(amount)
+    return Dollar.new(amount, "USD")
   end
 
 end
 
 class Dollar < Money
-  
-  def initialize(amount)
-    @amount = amount
-  end
-  
-  def *(multiplier)
-    return Money.dollar(@amount*multiplier)
-  end
-  
-  
 end
 
 class Franc < Money
-  
-  def initialize(amount)
-    @amount = amount
-  end
-  
-  def *(multiplier)
-    return Money.franc(@amount * multiplier)
-  end
-  
 end
